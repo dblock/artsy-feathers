@@ -3,14 +3,30 @@ Artsy Feathers
 
 Artsy Feathers is a set of examples that combine [Artsy Ruby client](https://github.com/artsy/artsy-ruby-client) and the [Twitter Ruby client](https://github.com/sferik/twitter) to tweet artworks and shows.
 
-Please note that Artsy currently doesn't have a public API program. API keys are required to run this sample. Email engineering@artsy.net and we'll notify you when this is available.
+Follow on Twitter
+-----------------
+
+![](screenshots/artsy_shows.png)
+
+[New Artsy Shows](https://twitter.com/artsy_shows)
 
 Running
 -------
 
-* [Register an application on Twitter](https://dev.twitter.com/apps/new). Edit its settings and set it to read/write.
-* Note the Twitter consumer key, secret, OAuth token and token secret.
+Please note that Artsy currently doesn't have a public API program. API keys are required to run this sample. Email engineering@artsy.net and we'll notify you when this is available.
+
+### Twitter
+
+* [Register an Application](https://dev.twitter.com/apps/new).
+* Change Access Level in Settings to Read/Write.
+* Create an Access Token.
+* Note the consumer key, secret, OAuth token and token secret.
+
+### Artsy
+
 * Note the Artsy application client id and client secret.
+
+### Run
 
 ```
 TWITTER_CONSUMER_KEY=...

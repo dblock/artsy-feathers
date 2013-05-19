@@ -1,4 +1,4 @@
-require 'artsy-client'
+require File.expand_path(File.join(File.dirname(__FILE__), 'artsy_config.rb'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'twitter_auth.rb'))
 
 Artsy::Client.authenticate!

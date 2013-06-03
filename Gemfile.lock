@@ -29,5 +29,5 @@ PLATFORMS
 
 DEPENDENCIES
   artsy-client!
-  oj
-  twitter
+  oj (= 2.0.13)
+  twitter (= 4.6.2)

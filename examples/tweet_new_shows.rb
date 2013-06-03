@@ -22,7 +22,7 @@ Artsy::Client.shows[:results].reverse.each do |show|
   end
   # links count 22 characters, see https://dev.twitter.com/docs/faq#5810
   # + two CR/LFs
-  artwork_info = smart_truncate(artwork.to_s, 140 - 22 - 4 - show_info.length)
+  artwork_info = smart_truncate(artwork.to_s, 140 - 22 - 5 - show_info.length)
   Twitter.update("#{artwork_info}\n#{show_info}\n#{url}")
   break # one at a time
 end

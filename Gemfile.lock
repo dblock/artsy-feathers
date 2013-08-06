@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/artsy/artsy-ruby-client.git
-  revision: bcb1ff6f65286cc10ddda3912052caaaf847c47e
+  revision: 4bc0fb8ed72cd5b54423b04fdf23140a57740ea6
   specs:
     artsy-client (0.1.0)
       faraday
@@ -11,11 +11,11 @@ GIT
 GEM
   remote: http://rubygems.org/
   specs:
-    faraday (0.8.7)
-      multipart-post (~> 1.1)
+    faraday (0.8.8)
+      multipart-post (~> 1.2.0)
     hashie (2.0.5)
     i18n (0.6.4)
-    multi_json (1.7.3)
+    multi_json (1.7.8)
     multipart-post (1.2.0)
     oj (2.0.13)
     simple_oauth (0.2.0)

@@ -20,15 +20,15 @@ Artsy::Client.shows[:results].reverse.each do |show|
     next
   end
 
-  show_info = [ show.partner, show.where, show.when ].compact.join(", ")
   url = "http://artsy.net/show/#{show.id}"
   if recent_urls.include?(url)
     puts "  Skipping, already tweeted."
     next
   end
 
-  # links count 22 characters, see https://dev.twitter.com/docs/faq#5810
-  # + two CR/LFs
+  show_info = [ show.partner, show.where, show.when ].compact.join(", ")
+
+  # links count 22 characters, see https://dev.twitter.com/docs/faq#5810 + two CR/LFs
   show_info = smart_truncate(show_info.to_s, 140 - 22 - 3)
   Twitter.update("#{show_info}\n#{url}")
   break # one at a time

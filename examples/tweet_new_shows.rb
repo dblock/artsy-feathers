@@ -11,18 +11,15 @@ Artsy::Client.authenticate!
 
 Artsy::Client.shows[:results].reverse.each do |show|
   puts "#{show}"
-  artwork = show.artworks.select { |a| a.can_share_image }.first
-  next unless artwork
-  puts " #{artwork}"
   show_info = [ show.partner, show.where, show.when ].compact.join(", ")
-  url = "http://artsy.net/artwork/#{artwork.id}"
+  url = "http://artsy.net/show/#{show.id}"
   if recent_urls.include?(url)
     puts "  Skipping, already tweeted."
     next
   end
   # links count 22 characters, see https://dev.twitter.com/docs/faq#5810
   # + two CR/LFs
-  artwork_info = smart_truncate(artwork.to_s, 140 - 22 - 5 - show_info.length)
-  Twitter.update("#{artwork_info}\n#{show_info}\n#{url}")
+  show_info = smart_truncate(show_info.to_s, 140 - 22 - 3)
+  Twitter.update("#{show_info}\n#{url}")
   break # one at a time
 end

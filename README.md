@@ -43,6 +43,7 @@ Examples
 
 * [Tweet a New Artwork](examples/tweet_new_artwork.rb)
 * [Tweet New Shows](examples/tweet_new_shows.rb)
+* [Tweet Featured Posts](examples/tweet_featured_posts.rb)
 
 Contributing
 ------------

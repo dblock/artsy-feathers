@@ -14,10 +14,12 @@ Artsy::Client.shows[:results].reverse.each do |show|
   puts "#{show}"
 
   artwork = show.artworks.detect { |a| a.can_share_image }
-  url = "http://artsy.net/artwork/#{artwork.id}"
-  if recent_urls.include?(url)
-    puts "  Skipping, already tweeted."
-    next
+  if artwork
+    url = "http://artsy.net/artwork/#{artwork.id}"
+    if recent_urls.include?(url)
+      puts "  Skipping, already tweeted."
+      next
+    end
   end
 
   url = "http://artsy.net/show/#{show.id}"

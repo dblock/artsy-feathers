@@ -1,17 +1,22 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'artsy_config.rb'))
-require File.expand_path(File.join(File.dirname(__FILE__), 'twitter_auth.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__), 'twitter_client.rb'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'smart_truncate.rb'))
 
 # recently tweeted works or shows
-recent_urls = Twitter.user_timeline.map do |status|
-  status.urls.map(&:expanded_url)
+recent_urls = Twitter.client.user_timeline.map do |status|
+  status.urls.map(&:expanded_url).map(&:to_s)
 end.flatten
 
 Artsy::Client.authenticate!
 
+
 Artsy::Client.shows[:results].reverse.each do |show|
 
-  puts "#{show}"
+  show_info = [ show.name, show.partner, show.where, show.when ].compact.join(", ")
+  show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK
+  show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK)
+
+  puts show_info
 
   artwork = show.artworks.detect { |a| a.can_share_image }
   if artwork
@@ -28,11 +33,7 @@ Artsy::Client.shows[:results].reverse.each do |show|
     next
   end
 
-  show_info = [ show.partner, show.where, show.when ].compact.join(", ")
-
-  # links count 22 characters, see https://dev.twitter.com/docs/faq#5810 + two CR/LFs
-  show_info = smart_truncate(show_info.to_s, 140 - 22 - 3)
-  Twitter.update("#{show_info}\n#{url}")
+  Twitter.client.update("#{show_info}\n#{url}")
   break # one at a time
 
 end

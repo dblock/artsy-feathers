@@ -1,10 +1,10 @@
 require File.expand_path(File.join(File.dirname(__FILE__), 'artsy_config.rb'))
-require File.expand_path(File.join(File.dirname(__FILE__), 'twitter_auth.rb'))
+require File.expand_path(File.join(File.dirname(__FILE__), 'twitter_client.rb'))
 require File.expand_path(File.join(File.dirname(__FILE__), 'smart_truncate.rb'))
 
 # recently tweeted posts
-recent_urls = Twitter.user_timeline.map do |status|
-  status.urls.map(&:expanded_url)
+recent_urls = Twitter.client.user_timeline.map do |status|
+  status.urls.map(&:expanded_url).map(&:to_s)
 end.flatten
 
 Artsy::Client.authenticate!
@@ -21,7 +21,7 @@ Artsy::Client.featured_posts[:results].reverse.each do |post|
 
   # links count 22 characters, see https://dev.twitter.com/docs/faq#5810 + two CR/LFs
   post_info = smart_truncate("#{post.title} by #{post.author}", 140 - 22 - 3)
-  Twitter.update("#{post_info}\n#{url}")
+  Twitter.client.update("#{post_info}\n#{url}")
   break # one at a time
 
 end

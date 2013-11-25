@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/artsy/artsy-ruby-client.git
-  revision: 04dff0c531c479af1f8d083df5821259bcc2336a
+  revision: 34974ed37d87af254464df2f83a32a812f544b5d
   specs:
     artsy-client (0.1.0)
       faraday
@@ -10,26 +10,28 @@ GIT
 
 GIT
   remote: git://github.com/sferik/twitter.git
-  revision: 6ad7fe327e61ea7dfddf4ef200c7bd7df9aff0ee
+  revision: 64dc08fe2f6da12413709ff96836246880ae20b6
   specs:
-    twitter (5.0.0.rc.1)
-      buftok (~> 0.1.0)
+    twitter (5.0.0)
+      buftok (~> 0.2.0)
       descendants_tracker (~> 0.0.1)
       equalizer (~> 0.0.7)
       faraday (>= 0.8, < 0.10)
       http (~> 0.5.0)
       http_parser.rb (~> 0.5.0)
       json (~> 1.8)
+      memoizable (~> 0.2.0)
       simple_oauth (~> 0.2.0)
-      thread_safe (~> 0.1.3)
 
 GEM
   remote: http://rubygems.org/
   specs:
     atomic (1.1.14)
-    buftok (0.1)
+    buftok (0.2.0)
     descendants_tracker (0.0.3)
     equalizer (0.0.7)
+    faker (1.2.0)
+      i18n (~> 0.5)
     faraday (0.8.8)
       multipart-post (~> 1.2.0)
     hashie (2.0.5)
@@ -38,10 +40,13 @@ GEM
     http_parser.rb (0.5.3)
     i18n (0.6.5)
     json (1.8.1)
+    memoizable (0.2.0)
+      thread_safe (~> 0.1.3)
     multi_json (1.8.2)
     multipart-post (1.2.0)
     oj (2.0.13)
     simple_oauth (0.2.0)
+    stringex (2.1.2)
     thread_safe (0.1.3)
       atomic
 
@@ -50,5 +55,7 @@ PLATFORMS
 
 DEPENDENCIES
   artsy-client!
+  faker
   oj (= 2.0.13)
+  stringex
   twitter!

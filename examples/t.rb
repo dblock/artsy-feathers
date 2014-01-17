@@ -7,6 +7,11 @@ module Artsy
   module Client
     module API
       module Show
+        include Artsy::Client::API::Parse
+
+        # Retrieves recent shows.
+        #
+        # @return [Hash]
         def shows(options = {})
           objects_from_response(self, Artsy::Client::Domain::Show, :get, "/api/v1/shows", options)
         end
@@ -31,50 +36,20 @@ module Artsy
   end
 end
 
-# make a tree of tweets
-show_requests = Twitter.client.mentions_timeline.sort_by { |status| status.id }.select do |status|
-  ! status.in_reply_to_status_id? && status.full_text =~ /show (near|in) (.*)/i
-end
-
 Artsy::Client.authenticate!
 
-# recently tweeted replies
-recent_replies = Twitter.client.user_timeline.map do |status|
-  status.in_reply_to_status_id
-end.flatten
+[
+  {:lat=>46.1983922, :lng=>6.142296099999999},
+  {:lat=>40.7143528, :lng=>-74.00597309999999},
+  {:lat=>51.51121389999999, :lng=>-0.1198244}
+].each do |coordinates|
 
-show_requests.each do |status|
-  puts status.full_text
-
-  if recent_replies.include?(status.id)
-    puts " already replied, skipping"
-    next
-  end
-
-  location = status.full_text.match(/show (near|in) (.*)/i).captures.last
-  next unless location
-  puts " looking for a show near #{location}:"
-  geo = Geocoder.search(location)
-  geo = geo.first if geo
-  unless geo
-    puts "  ERROR: geocoder failed to find location."
-    next
-  end
-  coordinates = geo.coordinates ? { lat: geo.coordinates[0], lng: geo.coordinates[1] } : nil
-  unless coordinates
-    puts "  ERROR: geocoder failed to map coordinates."
-    next
-  end
-  puts "  #{coordinates}"
-
-  status_nickname = "@#{status.user.screen_name}"
+  puts " #{coordinates}"
 
   Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, size: 1).reverse.each do |show|
     show_info = [ show.name, show.partner, show.where, show.when ].compact.join(", ")
     show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK
-    show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK - status_nickname.length - 1)
-
-    puts show_info
+    show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK)
 
     show = Artsy::Client::Domain::Show.new(show)
     show.instance = Artsy::Client.instance
@@ -84,9 +59,6 @@ show_requests.each do |status|
       url = "http://artsy.net/artwork/#{artwork.id}"
     end
 
-    puts "   => #{[status_nickname, show_info, url].compact.join(' ')}"
-
-    Twitter.client.update("#{status_nickname} #{show_info}\n#{url}", in_reply_to_status_id: status.id)
+    puts [show_info, url].compact.join("\n")
   end
 end
-

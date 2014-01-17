@@ -9,8 +9,7 @@ end.flatten
 
 Artsy::Client.authenticate!
 
-
-Artsy::Client.shows[:results].reverse.each do |show|
+Artsy::Client.shows_feed[:results].reverse.each do |show|
 
   show_info = [ show.name, show.partner, show.where, show.when ].compact.join(", ")
   show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK

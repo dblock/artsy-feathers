@@ -69,7 +69,7 @@ show_requests.each do |status|
 
   status_nickname = "@#{status.user.screen_name}"
 
-  Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, size: 1).reverse.each do |show|
+  Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, size: 1).each do |show|
     show_info = [ show.name, show.partner, show.where, show.when ].compact.join(", ")
     show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK
     show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK - status_nickname.length - 1)

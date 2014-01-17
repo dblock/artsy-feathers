@@ -74,16 +74,7 @@ show_requests.each do |status|
     show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK
     show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK - status_nickname.length - 1)
 
-    puts show_info
-
-    show = Artsy::Client::Domain::Show.new(show)
-    show.instance = Artsy::Client.instance
-
-    artwork = show.artworks.detect { |a| a.can_share_image }
-    if artwork
-      url = "http://artsy.net/artwork/#{artwork.id}"
-    end
-
+    url = "http://artsy.net/show/#{show.id}"
     puts "   => #{[status_nickname, show_info, url].compact.join(' ')}"
 
     Twitter.client.update("#{status_nickname} #{show_info}\n#{url}", in_reply_to_status_id: status.id)

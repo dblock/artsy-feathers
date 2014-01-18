@@ -12,9 +12,11 @@ end
 puts show_requests.count
 
 if show_requests.count > 0
+  user_timeline = Twitter.client.user_timeline.to_a
+
   # recently tweeted replies
   STDOUT.write "Retrieving recent replies ... "
-  recent_replies = Twitter.client.user_timeline.map do |status|
+  recent_replies = user_timeline.map do |status|
     status.in_reply_to_status_id
   end.flatten
   puts recent_replies.count
@@ -47,15 +49,30 @@ if show_requests.count > 0
 
     status_nickname = "@#{status.user.screen_name}"
 
-    Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, size: 1, status: :running).each do |show|
+    show_info = nil
+    Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, status: :running).each do |show|
+      url = "http://artsy.net/show/#{show.id}"
+
       show_info = [ show.name, show.partner, show.where, show.when ].compact.join(", ")
       show_info = [ smart_truncate(show.name, 24), show.partner, show.where, show.when ].compact.join(", ") if show_info.length >= Twitter::TWEET_LIMIT_WITHOUT_A_LINK
       show_info = smart_truncate(show_info.to_s, Twitter::TWEET_LIMIT_WITHOUT_A_LINK - status_nickname.length - 1)
 
-      url = "http://artsy.net/show/#{show.id}"
-      puts "   => #{[status_nickname, show_info, url].compact.join(' ')}"
+      # did we tweet this show already as a reply?
+      previous_tweet = user_timeline.detect do |tweet|
+        tweet.reply? && tweet.full_text.include?(show_info)
+      end
+      if previous_tweet
+        puts "   skipping #{[status_nickname, show_info, url].compact.join(' ')}"
+        next
+      end
 
-      Twitter.client.update("#{status_nickname} #{show_info}\n#{url}", in_reply_to_status_id: status.id)
+      puts "   => #{[status_nickname, show_info, url].compact.join(' ')}"
+      show_info = "#{show_info}\n#{url}"
+      break
+    end
+
+    if show_info
+      Twitter.client.update("#{status_nickname} #{show_info}", in_reply_to_status_id: status.id)
     end
   end
 end

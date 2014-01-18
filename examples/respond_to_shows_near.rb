@@ -31,6 +31,8 @@ if show_requests.count > 0
       next
     end
 
+    status_nickname = "@#{status.user.screen_name}"
+
     location = status.full_text.match(near_regex).captures.last
     next unless location
     puts " looking for a show near #{location}:"
@@ -48,8 +50,6 @@ if show_requests.count > 0
       next
     end
     puts "  #{coordinates}"
-
-    status_nickname = "@#{status.user.screen_name}"
 
     show_info = nil
     Artsy::Client.shows(near: "#{coordinates[:lat]},#{coordinates[:lng]}", published_with_eligible_artworks: true, status: :running).each do |show|

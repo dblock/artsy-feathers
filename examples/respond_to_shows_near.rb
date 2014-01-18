@@ -41,13 +41,13 @@ if show_requests.count > 0
       geo = geo.first if geo
       unless geo
         puts "  ERROR: geocoder failed to find location."
-        Twitter.client.update("#{status_nickname} Sorry, I don't know where #{location} is :(", in_reply_to_status_id: status.id)
+        Twitter.client.update("#{status_nickname} Sorry, I don't know where #{smart_truncate(location, 24)} is :(", in_reply_to_status_id: status.id)
         next
       end
       coordinates = geo.coordinates ? { lat: geo.coordinates[0], lng: geo.coordinates[1] } : nil
       unless coordinates
         puts "  ERROR: geocoder failed to map coordinates."
-        Twitter.client.update("#{status_nickname} Sorry, I don't know where #{location} is :(", in_reply_to_status_id: status.id)
+        Twitter.client.update("#{status_nickname} Sorry, I don't know where #{smart_truncate(location, 24)} is :(", in_reply_to_status_id: status.id)
         next
       end
       puts "  #{coordinates}"
@@ -77,7 +77,7 @@ if show_requests.count > 0
       if show_info
         Twitter.client.update("#{status_nickname} #{show_info}", in_reply_to_status_id: status.id)
       else
-        Twitter.client.update("#{status_nickname} Sorry, I didn't find any running or upcoming shows near #{location} :(", in_reply_to_status_id: status.id)
+        Twitter.client.update("#{status_nickname} Sorry, I didn't find any running or upcoming shows near #{smart_truncate(location, 24)} :(", in_reply_to_status_id: status.id)
       end
     rescue Exception => e
       puts "ERROR: #{e.message}"

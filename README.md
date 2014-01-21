@@ -1,6 +1,8 @@
 Artsy Feathers
 ==============
 
+[![Build Status](https://travis-ci.org/dblock/artsy-feathers.png)](https://travis-ci.org/dblock/artsy-feathers)
+
 Artsy Feathers is a set of examples that combine [Artsy Ruby client](https://github.com/artsy/artsy-ruby-client) and the [Twitter Ruby client](https://github.com/sferik/twitter) to tweet artworks and shows.
 
 Follow on Twitter

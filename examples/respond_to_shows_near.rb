@@ -18,8 +18,9 @@ def already_tweeted?(user_timeline, show_info)
 end
 
 STDOUT.write "Retrieving show requests ... "
+yesterday = Time.now.utc - 24 * 60 * 60
 show_requests = Twitter.client.mentions_timeline.sort_by { |status| status.id }.select do |status|
-  ! status.in_reply_to_status_id? && status.full_text =~ near_regex
+  ! status.in_reply_to_status_id? && status.full_text =~ near_regex && status.created_at > yesterday
 end
 puts show_requests.count
 

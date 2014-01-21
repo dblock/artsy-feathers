@@ -18,7 +18,7 @@ def already_tweeted?(user_timeline, show_info)
 end
 
 STDOUT.write "Retrieving show requests ... "
-show_requests = Twitter.client.mentions_timeline.sort_by { |status| status.id }.select do |status|
+show_requests = Twitter.client.mentions_timeline(count: 5).sort_by { |status| status.id }.select do |status|
   ! status.in_reply_to_status_id? && status.full_text =~ near_regex
 end
 puts show_requests.count

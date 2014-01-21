@@ -8,9 +8,9 @@ Artsy Feathers is a set of examples that combine [Artsy Ruby client](https://git
 Follow on Twitter
 -----------------
 
-![](screenshots/artsy_shows.png)
+The [Artsy Shows](https://twitter.com/artsy_shows) BOT tweets new shows and will respond to queries that contain "show near [location]" directed at it. Follow [Artsy Shows on Twitter](https://twitter.com/artsy_shows).
 
-[New Artsy Shows](https://twitter.com/artsy_shows)
+![](screenshots/artsy_shows.png) ![](screenshots/artsy_show_near.png)
 
 Running
 -------
@@ -45,7 +45,9 @@ Examples
 
 * [Tweet a New Artwork](examples/tweet_new_artwork.rb)
 * [Tweet New Shows](examples/tweet_new_shows.rb)
+* [Tweet Show Near Location](examples/tweet_show_near.rb)
 * [Tweet Featured Posts](examples/tweet_featured_posts.rb)
+* [Tweet Popular Searches](examples/tweet_popular_searches.rb)
 
 Contributing
 ------------
@@ -57,4 +59,4 @@ Copyright and License
 
 MIT License, see [LICENSE](http://github.com/dblock/mongoid-scroll/raw/master/LICENSE.md) for details.
 
-(c) 2013 [Daniel Doubrovkine](http://github.com/dblock), [Artsy Inc.](http://artsy.net)
+(c) 2013-2014 [Daniel Doubrovkine](http://github.com/dblock), [Artsy](http://artsy.net)
